@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class WizardController {
@@ -47,12 +45,12 @@ public class WizardController {
         out.addAttribute("allCourses", courseRepository.findAll());
 
         // call the method getCourses in Wizard
-        List<Course> courses = new ArrayList<>();
+        Set<Course> courses = new HashSet<>();
         Method method = getMethod(wizard, "getCourses",
                 new Class[]{});
         if (method != null) {
             try {
-                courses = (List<Course>) method.invoke(wizard);
+                courses = (Set<Course>) method.invoke(wizard);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
             }
@@ -75,12 +73,12 @@ public class WizardController {
                 Course course = optionalCourse.get();
 
                 // call the method getCourses in Wizard
-                List<Course> courses;
+                Set<Course> courses;
                 Method method = getMethod(wizard, "getCourses",
                         new Class[]{});
                 if (method != null) {
                     try {
-                        courses = (List<Course>) method.invoke(wizard);
+                        courses = (Set<Course>) method.invoke(wizard);
                         courses.add(course);
                     } catch (IllegalAccessException | InvocationTargetException e) {
                         e.printStackTrace();
